@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Car Assembly</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .car-container {
+      position: relative;
+      width: 100%;
+      max-width: 1300px;
+    }
+
+    .car-container img {
+      width: 100%;
+      height: auto;
+    }
+
+    .ec-cart-widget {
+      position: fixed;
+      top: 20px;
+      right: 20px; 
+      z-index: 1000;
+    }
+
+    .clickable-area {
+      position: absolute;
+      cursor: pointer;
+      background-color: rgba(0, 0, 0, 0);
+      transition: background-color 0.3s ease;
+    }
+
+    .clickable-area:hover {
+      background-color: rgba(255, 20, 147, 0.4); 
+    }
+
+    .flux-capacitor {
+      top: 37%; left: 66%;
+      width: 10%; height: 10%;
+    }
+
+    .wheel-front {
+      top: 68%; left: 45%;
+      width: 11%; height: 15%;
+    }
+
+    .wheel-back {
+      top: 53%; left: 78%;
+      width: 11%; height: 15%;
+    }
+
+    .right-door {
+      top: 10%; left: 37%;
+      width: 23%; height: 12%;
+    }
+
+    .left-door {
+      top: 15%; left: 60%;
+      width: 26%; height: 15%;
+    }
+
+    .hood {
+      top: 40%; left: 20%;
+      width: 25%; height: 19%;
+    }
+
+    #assembly-status {
+      position: absolute;
+      top: 50%;
+      left: 35%;
+      font-size: 40px;
+      color: rgba(255, 20, 147, 0.4);
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="car-container">
+    <img id="car-image" src="delorean.png" alt="Car Image">
+
+    <!-- Clickable areas -->
+    <div class="clickable-area flux-capacitor" onclick="addProductToCart(723218290)"></div> 
+    <div class="clickable-area wheel-front" onclick="addProductToCart(723217479)"></div>
+    <div class="clickable-area wheel-back" onclick="addProductToCart(723218289)"></div>
+    <div class="clickable-area right-door" onclick="addProductToCart(723218136)"></div>
+    <div class="clickable-area left-door" onclick="addProductToCart(723218286)"></div>
+    <div class="clickable-area hood" onclick="addProductToCart(723218138)"></div>
+  </div>
+
+  <p id="assembly-status"></p>
+
+  <div class="ec-cart-widget"></div>
+  <div>
+    <script data-cfasync="false" type="text/javascript" src="https://app.ecwid.com/script.js?112070790&data_platform=code&data_date=2025-02-11" charset="utf-8"></script>
+    <script type="text/javascript">Ecwid.init();</script>
+  </div>
+
+  <script type="text/javascript">
+    const maxItems = 5;
+
+    function addProductToCart(productId) {
+
+      let product = {
+        id: productId,
+        quantity: 1,
+        callback: function(success, product, cart) {
+          if (cart && cart.productsQuantity !== undefined) {
+            let cartQuantity = cart.productsQuantity;  
+            if (cartQuantity >= maxItems) {
+              document.getElementById('car-image').style.display = 'none';
+              document.getElementById('assembly-status').textContent = 'You’ve assembled the car!';
+            }
+          } else {
+            console.error('Error: productsQuantity is not available or cart is not loaded correctly.');
+          }
+        }
+      }
+      Ecwid.Cart.addProduct(product);
+    }
+
+  </script>
+
+</body>
+</html>
